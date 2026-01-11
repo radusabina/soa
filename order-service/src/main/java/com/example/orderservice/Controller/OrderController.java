@@ -28,8 +28,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order add(@RequestBody Order order) {
-        return orderService.addOrder(order);
+    public ResponseEntity<?> add(@RequestBody Order order) {
+        Order savedOrder = orderService.addOrder(order);
+        return ResponseEntity.ok(savedOrder);
     }
 
     @DeleteMapping("/{id}")
