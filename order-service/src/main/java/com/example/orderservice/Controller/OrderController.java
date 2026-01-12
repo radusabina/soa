@@ -1,5 +1,6 @@
 package com.example.orderservice.Controller;
 
+import com.example.orderservice.DTO.CreateOrderRequest;
 import com.example.orderservice.Entity.Order;
 import com.example.orderservice.Service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Order order) {
+    public ResponseEntity<?> add(@RequestBody CreateOrderRequest order) {
         Order savedOrder = orderService.addOrder(order);
-        return ResponseEntity.ok(savedOrder);
+        return ResponseEntity.ok("Order added successfully");
     }
 
     @DeleteMapping("/{id}")

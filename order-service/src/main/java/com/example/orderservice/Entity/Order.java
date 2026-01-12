@@ -1,7 +1,10 @@
 package com.example.orderservice.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -15,8 +18,11 @@ public class Order {
     private Long id;
 
     private long userId;
-    private long productId;
-    private int quantity;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OrderItem> items;
+
     private double totalPrice;
 }
 
