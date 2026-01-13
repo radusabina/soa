@@ -58,7 +58,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYWJpbmEiLCJpYXQiOjE2NzM2NzI3MjM
 ### product-service endpoints
 | Method         | Endpoint                              | Description                                                                                  |
 |-----------------|----------------------------------|----------------------------------------------------------------------------------------|
-| GET | /api/products | Gets all users|
+| GET | /api/products | Gets all products|
 | GET | /api/products/{id} | Get product by id |
 | POST | /api/products | Adds an product |
 | DELETE | /api/products/{id} | Deletes the product with the specified id |
