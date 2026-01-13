@@ -12,14 +12,15 @@ public class GatewayConfiguration {
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("user-service", r -> r
-                        .path("/api/users/**", "/auth/**")
-                        .uri("http://localhost:8081"))
+                        .path("/api/users/**")
+                        .uri("http://user-service:8081"))
                 .route("order-service", r -> r
                         .path("/api/orders/**")
-                        .uri("http://localhost:8082"))
+                        .uri("http://order-service:8082"))
                 .route("product-service", r -> r
                         .path("/api/products/**")
-                        .uri("http://localhost:8083"))
+                        .uri("http://product-service:8083"))
                 .build();
     }
+
 }

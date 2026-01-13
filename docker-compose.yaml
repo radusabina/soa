@@ -2,19 +2,21 @@ version: '3.9'
 
 services:
 
-  # ================= USER SERVICE =================
+  # ---------- USER SERVICE ----------
   user-service:
     build: ./user-service
+    container_name: user-service
     env_file:
       - ./user-service/.env
     depends_on:
       - user-db
       - rabbitmq
-    expose:
-      - "8081"
+    ports:
+      - "8081:8081"
 
   user-db:
     image: postgres:15
+    container_name: user-db
     environment:
       POSTGRES_DB: usersdb
       POSTGRES_USER: postgres
@@ -22,19 +24,21 @@ services:
     volumes:
       - ./db/users:/var/lib/postgresql/data
 
-  # ================= ORDER SERVICE =================
+  # ---------- ORDER SERVICE ----------
   order-service:
     build: ./order-service
+    container_name: order-service
     env_file:
       - ./order-service/.env
     depends_on:
       - order-db
       - rabbitmq
-    expose:
-      - "8082"
+    ports:
+      - "8082:8082"
 
   order-db:
     image: postgres:15
+    container_name: order-db
     environment:
       POSTGRES_DB: ordersdb
       POSTGRES_USER: postgres
@@ -42,19 +46,21 @@ services:
     volumes:
       - ./db/orders:/var/lib/postgresql/data
 
-  # ================= PRODUCT SERVICE =================
+  # ---------- PRODUCT SERVICE ----------
   product-service:
     build: ./product-service
+    container_name: product-service
     env_file:
       - ./product-service/.env
     depends_on:
       - product-db
       - rabbitmq
-    expose:
-      - "8083"
+    ports:
+      - "8083:8083"
 
   product-db:
     image: postgres:15
+    container_name: product-db
     environment:
       POSTGRES_DB: productsdb
       POSTGRES_USER: postgres
@@ -62,42 +68,34 @@ services:
     volumes:
       - ./db/products:/var/lib/postgresql/data
 
-  # ================= RABBITMQ =================
+  # ---------- RABBITMQ ----------
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - "15672:15672"   # UI doar pentru debug
-    expose:
-      - "5672"
+      - "15672:15672"  # management UI
 
-  # ================= WEB SERVER (API GATEWAY) =================
-  web-server-1:
+  # ---------- WEB SERVER ----------
+  web-server:
     build: ./web-server
+    container_name: web-server
     env_file:
       - ./web-server/.env
     depends_on:
       - user-service
       - order-service
       - product-service
-    expose:
-      - "8085"
+    ports:
+      - "8085:8085"
 
-  web-server-2:
-    build: ./web-server
-    env_file:
-      - ./web-server/.env
-    depends_on:
-      - user-service
-      - order-service
-      - product-service
-    expose:
-      - "8085"
-
-  # ================= NGINX (LOAD BALANCER) =================
+  # ---------- NGINX ----------
   nginx:
     build: ./nginx
+    container_name: nginx
     ports:
       - "80:80"
     depends_on:
-      - web-server-1
-      - web-server-2
+      - web-server
+      - user-service
+      - order-service
+      - product-service
