@@ -88,6 +88,18 @@ services:
     ports:
       - "8085:8085"
 
+  web-server2:
+    build: ./web-server
+    container_name: web-server
+    env_file:
+      - ./web-server/.env
+    depends_on:
+      - user-service
+      - order-service
+      - product-service
+    ports:
+      - "8085:8085"
+
   # ---------- NGINX ----------
   nginx:
     build: ./nginx
